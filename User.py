@@ -23,15 +23,15 @@ class User:
         # TODO: only logged in users can follow
         if user == self:
             raise ValueError("Cannot follow yourself")  # TODO: check if need to raise an exception
-        self.followers.add(user)
+        user.followers.add(self)
 
         # print message
         print(f"{self.username} started following {user.username}")
 
     def unfollow(self, user: "User") -> None:
         # TODO: only logged in users can unfollow
-        if user in self.followers:
-            self.followers.remove(user)
+        if self in user.followers:
+            user.followers.remove(self)
             # print message
             print(f"{self.username} unfollowed {user.username}")
         # TODO: check what to do if user is not in followers
@@ -43,22 +43,18 @@ class User:
         self.posts.append(new_post)
         return new_post
 
-    def notify(self, message: str) -> None:
+    def notify(self, message: str, log: bool, extra_message: str = ""):
         """
-        Notify the user with the given message
+         Notify the user with the given message.
+         If :log is True, the message will be printed to the console
         :param message: the message to notify the user with
+        :param log: whether to print the message to the console
+        :param extra_message: extra message to print
         :return: None
         """
-        self.add_notification(message)
-
-    def add_notification(self, notification: str) -> None:
-        """
-        Add the given notification to the user's notification list and print message
-        :param notification:
-        :return:
-        """
-        self.notifications.append(notification)
-        print(f"notification to {self.username}: {notification}")
+        self.notifications.append(message)
+        if log:
+            print(f"notification to {self.username}: {message}{extra_message}")
 
     def print_notifications(self):
         print(f"{self.username}'s notifications:")

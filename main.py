@@ -50,7 +50,7 @@ def main():
     print()
 
     # Price reduction of the product for sale
-    p3.discount(10, "pass3")  # TODO: just for Sale posts
+    p3.discount(10, "pass3")
     print()
 
     # more likes and comments
@@ -60,13 +60,13 @@ def main():
     print()
 
     # Defining the product as sold
-    p3.sold("pass3")  # TODO: just for Sale posts
+    p3.sold("pass3")
     print()
 
     print(p3)
 
     # Displaying the image of the post
-    p2.display()  # TODO: just for Image posts
+    p2.display()
     print()
 
     p2.comment(u5, "Amazing picture!")
@@ -95,7 +95,7 @@ def main():
     print()
 
     # Network printing
-    print(network)
+    print(network, end='')
 
 
 if __name__ == '__main__':
