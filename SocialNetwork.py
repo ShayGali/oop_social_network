@@ -4,20 +4,24 @@ from User import User
 
 
 class SocialNetwork:
-    instance = None
+    __instance = None
+    __is_initialized = False
 
-    @staticmethod
-    def get_instance():
-        return SocialNetwork.instance
+    # implement the singleton pattern
+    def __new__(cls, name: str):
+        if cls.__instance is None:
+            cls.__instance = super().__new__(cls)
+            cls.__is_initialized = True
+        return cls.__instance
 
-    # TODO: singleton
     def __init__(self, name: str):
+        if self.__is_initialized:
+            return  # already initialized, not need to initialize again
         self.name = name
         self.users: Dict[str, User] = dict()
         self.logged_in_users: Set[User] = set()
 
         print(f"The social network {name} was created!")
-        SocialNetwork.instance = self
 
     def sign_up(self, username: str, password: str) -> User:
         if username in self.users:
@@ -62,3 +66,12 @@ class SocialNetwork:
 
     def __repr__(self):
         return self.__str__()
+
+
+if __name__ == '__main__':
+    a = SocialNetwork("a")
+    b = SocialNetwork("b")
+    c = SocialNetwork("c")
+    print(a)
+    print(b)
+    print(c)

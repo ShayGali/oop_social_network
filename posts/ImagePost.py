@@ -14,8 +14,7 @@ class ImagePost(Post):
         # TODO: check if need to print message, or just display the image
         print("Shows picture")
         img = Image.open(self.image_url)
-        img_arr = np.array(img)
-        plt.imshow(img_arr)
+        plt.imshow(img)
         plt.show()
 
     def __repr__(self):
