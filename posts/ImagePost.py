@@ -14,9 +14,9 @@ class ImagePost(Post):
         # TODO: check if need to print message, or just display the image
         print("Shows picture")
         img = Image.open(self.image_url)
-        # img_arr = np.array(img)
-        # plt.imshow(img_arr)
-        # plt.show()
+        img_arr = np.array(img)
+        plt.imshow(img_arr)
+        plt.show()
 
     def __repr__(self):
         return f'{super().get_creator().username} posted a picture\n'
