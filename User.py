@@ -12,11 +12,10 @@ class User:
             raise ValueError("Password must be 4 to 8 characters long")
         self.username = username
         self.password = password
+
         self.followers: Set["User"] = set()
-        self.posts: List = []
-        # TODO: notifications
+        self.num_of_posts = 0
         self.notifications: List[str] = []
-        # TODO: check if it is right
         self.post_factory = PostFactory()
 
     def follow(self, user: "User") -> None:
@@ -40,7 +39,7 @@ class User:
         # TODO: only logged in users can publish posts
         # TODO: check of better way to do this, abd how to print the message
         new_post = self.post_factory.create_post(post_type, self, *args)
-        self.posts.append(new_post)
+        self.num_of_posts += 1
         return new_post
 
     def notify(self, message: str, log: bool, extra_message: str = ""):
@@ -62,7 +61,7 @@ class User:
             print(n)
 
     def __str__(self):
-        return f'User name: {self.username}, Number of posts: {len(self.posts)}, Number of followers: {len(self.followers)}'
+        return f'User name: {self.username}, Number of posts: {self.num_of_posts}, Number of followers: {len(self.followers)}'
 
     def __repr__(self):
         return self.__str__()
