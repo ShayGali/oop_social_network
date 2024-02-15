@@ -11,7 +11,6 @@ class SocialNetwork:
     def __new__(cls, name: str):
         if cls.__instance is None:
             cls.__instance = super().__new__(cls)
-            cls.__is_initialized = True
         return cls.__instance
 
     def __init__(self, name: str):
@@ -20,6 +19,8 @@ class SocialNetwork:
         self.name = name
         self.users: Dict[str, User] = dict()
         self.logged_in_users: Set[User] = set()
+
+        self.__is_initialized = True
 
         print(f"The social network {name} was created!")
 
