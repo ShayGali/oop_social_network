@@ -1,5 +1,7 @@
+import importlib
 from typing import Set, List
 
+from CostomExcption import NotLoginError, IllegalOperationError
 from PostFactory import PostFactory
 
 
@@ -26,9 +28,10 @@ class User:
         Returns:
             None
         """
-        # TODO: only logged in users can follow
+        User.check_if_user_login(self)
+
         if user == self:
-            raise ValueError("Cannot follow yourself")  # TODO: check if need to raise an exception
+            raise ValueError("Cannot follow yourself")
         user.followers.add(self)
 
         # print message
@@ -39,24 +42,26 @@ class User:
         Unfollow the given user.
         The given user followers set will be updated accordingly.
         """
-        # TODO: only logged in users can unfollow
+        User.check_if_user_login(self)
+
         if self in user.followers:
             user.followers.remove(self)
             # print message
             print(f"{self.username} unfollowed {user.username}")
-        # TODO: check what to do if user is not in followers
+        else:
+            raise IllegalOperationError("User is not following the given user")
 
     def publish_post(self, post_type: str, *args):
         """
         Publish a post of the given type.
-        The post will be created using the post factory.
+        The post will be created using the post-factory.
         Args:
             post_type: the type of the post to create.
             Will be in ["Text", "Image", "Sale"]
             *args: the arguments to pass to the post.
             See the `PostFactory.py` for more details
         """
-        # TODO: only logged in users can publish posts
+        User.check_if_user_login(self)
         new_post = self.post_factory.create_post(post_type, self, *args)
         self.num_of_posts += 1
         return new_post
@@ -92,3 +97,10 @@ class User:
 
     def __hash__(self):
         return hash(self.username)
+
+    @staticmethod
+    def check_if_user_login(user):
+        social_network = importlib.import_module("SocialNetwork").SocialNetwork
+        # only logged-in users can do this
+        if not social_network.get_instance().is_user_logged_in(user):
+            raise NotLoginError("User is not logged in")

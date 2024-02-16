@@ -6,10 +6,19 @@ from CostomExcption import UsernameAlreadyExistsError, UserDoesNotExistError, No
 
 
 class SocialNetwork:
+    """
+    A class representing a social network.
+    The social network is a singleton.
+    """
     __instance = None
     __is_initialized = False
 
-    # implement the singleton pattern
+    @staticmethod
+    def get_instance():
+        if SocialNetwork.__instance is None:
+            raise ValueError("The social network was not created yet")
+        return SocialNetwork.__instance
+
     def __new__(cls, name: str):
         if cls.__instance is None:
             cls.__instance = super().__new__(cls)
@@ -64,4 +73,3 @@ class SocialNetwork:
 
     def __repr__(self):
         return self.__str__()
-

@@ -21,3 +21,8 @@ class UserDoesNotExistError(RuntimeError):
 class InvalidCredentialsError(RuntimeError):
     def __init__(self, error_msg):
         self.error_msg = error_msg
+
+
+class IllegalOperationError(RuntimeError):
+    def __init__(self, error_msg):
+        self.error_msg = error_msg
