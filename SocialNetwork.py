@@ -2,6 +2,8 @@ from typing import Dict, Set
 
 from User import User
 
+from CostomExcption import UsernameAlreadyExistsError, UserDoesNotExistError, NotLoginError, InvalidCredentialsError
+
 
 class SocialNetwork:
     __instance = None
@@ -26,7 +28,7 @@ class SocialNetwork:
 
     def sign_up(self, username: str, password: str) -> User:
         if username in self.users:
-            raise ValueError("Username already exists")  # TODO: check if this is the right way to do it
+            raise UsernameAlreadyExistsError("Username already exists")
 
         user = User(username, password)
         self.users[username] = user
@@ -34,29 +36,24 @@ class SocialNetwork:
         return user
 
     def log_out(self, username: str) -> None:
-        # TODO: check if need this if statement
         if username not in self.users:
-            raise ValueError("Username does not exist")
+            raise UserDoesNotExistError("Username does not exist")
 
-        # TODO: check if need this if statement
         if self.users[username] not in self.logged_in_users:
-            raise ValueError("User is not logged in")
+            raise NotLoginError("Can't log out a user that is not logged in")
 
         # remove user from logged_in_users
         self.logged_in_users.remove(self.users[username])
         print(f"{username} disconnected")
 
     def log_in(self, username: str, password: str) -> None:
-        if username not in self.users:
-            raise ValueError("Username does not exist")
+        if username not in self.users or self.users[username].password != password:
+            raise InvalidCredentialsError("Invalid credentials")
 
         user = self.users[username]
-        if user.password != password:
-            raise ValueError("Password is incorrect")
 
         self.logged_in_users.add(user)
         print(f"{username} connected")
-        # TODO: what to do if the user is already logged in?
 
     def is_user_logged_in(self, user: User) -> bool:
         return user in self.logged_in_users
@@ -68,11 +65,3 @@ class SocialNetwork:
     def __repr__(self):
         return self.__str__()
 
-
-if __name__ == '__main__':
-    a = SocialNetwork("a")
-    b = SocialNetwork("b")
-    c = SocialNetwork("c")
-    print(a)
-    print(b)
-    print(c)
