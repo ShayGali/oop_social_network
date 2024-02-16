@@ -1,7 +1,7 @@
-from posts.Post import Post
-from PIL import Image
 import matplotlib.pyplot as plt
-import numpy as np
+from PIL import Image
+
+from posts.Post import Post
 
 
 class ImagePost(Post):
@@ -11,7 +11,6 @@ class ImagePost(Post):
         print(self)
 
     def display(self) -> None:
-        # TODO: check if need to print message, or just display the image
         print("Shows picture")
         img = Image.open(self.image_url)
         plt.imshow(img)

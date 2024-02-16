@@ -1,7 +1,6 @@
-from abc import ABC, abstractmethod
-from typing import Set, List
-
 import importlib
+from abc import ABC, abstractmethod
+from typing import Set
 
 from Notificator import Notificator
 

@@ -1,3 +1,4 @@
+from CostomExcption import InvalidCredentialsError
 from posts.Post import Post
 
 
@@ -22,11 +23,11 @@ class SalePost(Post):
         if discount <= 0 or discount > 100:
             raise ValueError("Discount must be in the range (0, 100]")
 
-        # TODO: what happen if the password is wrong?
         if super().get_creator().password == password:
-            self.price = self.price * (1 - discount / 100)  # TODO: check if the calculation is correct
+            self.price = self.price * (1 - discount / 100)
             print(f'Discount on {super().get_creator().username} product! the new price is: {self.price}')
-            # TODO: check if need to format the price
+        else:
+            raise InvalidCredentialsError("Invalid credentials")
 
     def sold(self, password: str) -> None:
         """
@@ -40,5 +41,4 @@ class SalePost(Post):
             print(f'{super().get_creator().username}\'s product is sold')
 
     def __repr__(self):
-        # TODO: check if need to format the price
         return f'{super().get_creator().username} posted a product for sale:\n{"Sold!" if self.isSold else "For sale!"} {self.product_name}, price: {self.price}, pickup from: {self.city}\n'
