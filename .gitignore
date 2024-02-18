@@ -1,3 +1,4 @@
 #self_check
 venv
 .idea
+__pycache__
