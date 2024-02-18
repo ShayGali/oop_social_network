@@ -13,17 +13,18 @@ from PostFactory import PostFactory
 
 
 class User:
+    _post_factory = PostFactory()
+
     def __init__(self, username: str, password: str):
         if len(password) < 4 or len(password) > 8:
             raise ValueError("Password must be 4 to 8 characters long")
 
         self.username = username
-        self.password = password
+        self._password = password
 
-        self.followers: Set["User"] = set()
-        self.num_of_posts = 0
-        self.notifications: List[str] = []
-        self.post_factory = PostFactory()
+        self._followers: Set["User"] = set()
+        self._num_of_posts = 0
+        self._notifications: List[str] = []
 
     def follow(self, user: "User") -> None:
         """
@@ -39,7 +40,7 @@ class User:
 
         if user == self:
             raise ValueError("Cannot follow yourself")
-        user.followers.add(self)
+        user._followers.add(self)
 
         # print message
         print(f"{self.username} started following {user.username}")
@@ -51,8 +52,8 @@ class User:
         """
         User.check_if_user_login(self)
 
-        if self in user.followers:
-            user.followers.remove(self)
+        if self in user._followers:
+            user._followers.remove(self)
             # print message
             print(f"{self.username} unfollowed {user.username}")
         else:
@@ -69,8 +70,8 @@ class User:
             See the `PostFactory.py` for more details
         """
         User.check_if_user_login(self)
-        new_post = self.post_factory.create_post(post_type, self, *args)
-        self.num_of_posts += 1
+        new_post = User._post_factory.create_post(post_type, self, *args)
+        self._num_of_posts += 1
         return new_post
 
     def notify(self, message: str, log: bool, extra_message: str = "") -> None:
@@ -82,17 +83,32 @@ class User:
         :param extra_message: extra message to print
         :return: None
         """
-        self.notifications.append(message)
+        self._notifications.append(message)
         if log:
             print(f"notification to {self.username}: {message}{extra_message}")
 
     def print_notifications(self):
         print(f"{self.username}'s notifications:")
-        for n in self.notifications:
+        for n in self._notifications:
             print(n)
 
+    def compare_password(self, password: str) -> bool:
+        """
+        Compare the given password to the user's password.
+        :param password: the password to compare
+        :return: True if the given password is the same as the user's password, False otherwise
+        """
+        return self._password == password
+
+    def get_followers(self) -> Set["User"]:
+        """
+        Get the user's followers
+        :return: the user's followers
+        """
+        return self._followers
+
     def __str__(self) -> str:
-        return f'User name: {self.username}, Number of posts: {self.num_of_posts}, Number of followers: {len(self.followers)}'
+        return f'User name: {self.username}, Number of posts: {self._num_of_posts}, Number of followers: {len(self._followers)}'
 
     def __repr__(self) -> str:
         return self.__str__()

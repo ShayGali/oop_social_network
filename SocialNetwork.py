@@ -1,8 +1,7 @@
 from typing import Dict, Set
 
-from User import User
-
 from CostomExcption import UsernameAlreadyExistsError, UserDoesNotExistError, NotLoginError, InvalidCredentialsError
+from User import User
 
 
 class SocialNetwork:
@@ -56,7 +55,7 @@ class SocialNetwork:
         print(f"{username} disconnected")
 
     def log_in(self, username: str, password: str) -> None:
-        if username not in self.users or self.users[username].password != password:
+        if username not in self.users or self.users[username].compare_password(password) is False:
             raise InvalidCredentialsError("Invalid credentials")
 
         user = self.users[username]

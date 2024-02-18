@@ -22,7 +22,7 @@ class SalePost(Post):
         if discount <= 0 or discount > 100:
             raise ValueError("Discount must be in the range (0, 100]")
 
-        if super().get_creator().password == password:
+        if super().get_creator().compare_password(password):
             self.price = self.price * (1 - discount / 100)
             print(f'Discount on {super().get_creator().username} product! the new price is: {self.price}')
         else:
@@ -35,7 +35,7 @@ class SalePost(Post):
         :param password: the password of the creator of the post
         :return: None
         """
-        if super().get_creator().password == password:
+        if super().get_creator().compare_password(password):
             self.isSold = True
             print(f'{super().get_creator().username}\'s product is sold')
 

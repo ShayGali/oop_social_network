@@ -49,5 +49,5 @@ class Notificator:
         Returns:
             None
         """
-        for user in caller.followers:  # Notify all followers
+        for user in caller.get_followers():  # Notify all followers
             self.notify_user(user, caller, message, log)
