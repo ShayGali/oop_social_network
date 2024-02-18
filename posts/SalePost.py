@@ -9,7 +9,6 @@ class SalePost(Post):
         self.price = price
         self.city = city
         self.isSold = False
-        print(self)
 
     def discount(self, discount: float, password: str) -> None:
         """

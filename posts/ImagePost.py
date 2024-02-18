@@ -8,7 +8,6 @@ class ImagePost(Post):
     def __init__(self, creator, image_path: str):
         super().__init__(creator)
         self.image_url = image_path
-        print(self)
 
     def display(self) -> None:
         print("Shows picture")
