@@ -14,31 +14,31 @@ from Notificator import Notificator
 
 
 class Post(ABC):
-    notificator = Notificator()
+    _notificator = Notificator()
 
     @abstractmethod
     def __init__(self, creator: User) -> None:
-        self.creator = creator
-        self.likes: Set = set()  # set of users objects
+        self._creator = creator
+        self._likes: Set = set()  # set of users objects
 
-        Post.notificator.notify_all_followers(creator, f'{creator.username} has a new post')
+        Post._notificator.notify_all_followers(creator, f'{creator.username} has a new post')
 
     def like(self, user: User) -> None:
         Post.check_if_user_login(user)
 
-        if user not in self.likes:
-            self.likes.add(user)
+        if user not in self._likes:
+            self._likes.add(user)
 
-            Post.notificator.notify_user(self.creator, user, f'{user.username} liked your post', True)
+            Post._notificator.notify_user(self._creator, user, f'{user.username} liked your post', True)
 
     def comment(self, user: User, comment: str) -> None:
         Post.check_if_user_login(user)
 
-        Post.notificator.notify_user(self.creator, user, f'{user.username} commented on your post', True,
-                                     f": {comment}")
+        Post._notificator.notify_user(self._creator, user, f'{user.username} commented on your post', True,
+                                      f": {comment}")
 
     def get_creator(self):
-        return self.creator
+        return self._creator
 
     @staticmethod
     def check_if_user_login(user: User) -> None:
@@ -46,3 +46,6 @@ class Post(ABC):
         # only logged-in users can do this
         if not SocialNetwork.get_instance().is_user_logged_in(user):
             raise NotLoginError("User is not logged in")
+
+    def __str__(self):
+        return self.__repr__()

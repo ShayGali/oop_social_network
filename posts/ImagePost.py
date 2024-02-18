@@ -7,11 +7,11 @@ from posts.Post import Post
 class ImagePost(Post):
     def __init__(self, creator, image_path: str):
         super().__init__(creator)
-        self.image_url = image_path
+        self._image_url = image_path
 
     def display(self) -> None:
         print("Shows picture")
-        img = Image.open(self.image_url)
+        img = Image.open(self._image_url)
         plt.imshow(img)
         plt.show()
 

@@ -5,10 +5,10 @@ from posts.Post import Post
 class SalePost(Post):
     def __init__(self, creator, product_name: str, price: float, city: str):
         super().__init__(creator)
-        self.product_name = product_name
-        self.price = price
-        self.city = city
-        self.isSold = False
+        self._product_name = product_name
+        self._price = price
+        self._city = city
+        self._isSold = False
 
     def discount(self, discount: float, password: str) -> None:
         """
@@ -23,8 +23,8 @@ class SalePost(Post):
             raise ValueError("Discount must be in the range (0, 100]")
 
         if super().get_creator().compare_password(password):
-            self.price = self.price * (1 - discount / 100)
-            print(f'Discount on {super().get_creator().username} product! the new price is: {self.price}')
+            self._price = self._price * (1 - discount / 100)
+            print(f'Discount on {super().get_creator().username} product! the new price is: {self._price}')
         else:
             raise InvalidCredentialsError("Invalid credentials")
 
@@ -36,8 +36,8 @@ class SalePost(Post):
         :return: None
         """
         if super().get_creator().compare_password(password):
-            self.isSold = True
+            self._isSold = True
             print(f'{super().get_creator().username}\'s product is sold')
 
     def __repr__(self):
-        return f'{super().get_creator().username} posted a product for sale:\n{"Sold!" if self.isSold else "For sale!"} {self.product_name}, price: {self.price}, pickup from: {self.city}\n'
+        return f'{super().get_creator().username} posted a product for sale:\n{"Sold!" if self._isSold else "For sale!"} {self._product_name}, price: {self._price}, pickup from: {self._city}\n'
