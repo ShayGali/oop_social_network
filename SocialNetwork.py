@@ -26,49 +26,49 @@ class SocialNetwork:
     def __init__(self, name: str):
         if self.__is_initialized:
             return  # already initialized, not need to initialize again
-        self.name = name
-        self.users: Dict[str, User] = dict()
-        self.logged_in_users: Set[User] = set()
+        self._name = name
+        self._users: Dict[str, User] = dict()
+        self._logged_in_users: Set[User] = set()
 
-        self.__is_initialized = True
+        self.__is_initialized = True  # update the flag to True
 
         print(f"The social network {name} was created!")
 
     def sign_up(self, username: str, password: str) -> User:
-        if username in self.users:
+        if username in self._users:
             raise UsernameAlreadyExistsError("Username already exists")
 
         user = User(username, password)
-        self.users[username] = user
-        self.logged_in_users.add(user)
+        self._users[username] = user
+        self._logged_in_users.add(user)
         return user
 
     def log_out(self, username: str) -> None:
-        if username not in self.users:
+        if username not in self._users:
             raise UserDoesNotExistError("Username does not exist")
 
-        if self.users[username] not in self.logged_in_users:
+        if self._users[username] not in self._logged_in_users:
             raise NotLoginError("Can't log out a user that is not logged in")
 
         # remove user from logged_in_users
-        self.logged_in_users.remove(self.users[username])
+        self._logged_in_users.remove(self._users[username])
         print(f"{username} disconnected")
 
     def log_in(self, username: str, password: str) -> None:
-        if username not in self.users or self.users[username].compare_password(password) is False:
+        if username not in self._users or self._users[username].compare_password(password) is False:
             raise InvalidCredentialsError("Invalid credentials")
 
-        user = self.users[username]
+        user = self._users[username]
 
-        self.logged_in_users.add(user)
+        self._logged_in_users.add(user)
         print(f"{username} connected")
 
     def is_user_logged_in(self, user: User) -> bool:
-        return user in self.logged_in_users
+        return user in self._logged_in_users
 
     def __str__(self):
-        users = "\n".join([str(u) for u in self.users.values()])
-        return f'{self.name} social network:\n{users}'
+        users = "\n".join([str(u) for u in self._users.values()])
+        return f'{self._name} social network:\n{users}'
 
     def __repr__(self):
         return self.__str__()
