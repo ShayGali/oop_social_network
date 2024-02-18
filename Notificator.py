@@ -1,3 +1,14 @@
+# for type hinting
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from User import User
+
+
+# end type hinting
+
 class Notificator:
     """
     A class to notify users.
@@ -5,7 +16,7 @@ class Notificator:
     The register method is implemented in the User class, because we notify just the users who are following another user.
     """
 
-    def notify_user(self, user_to_notify: "User", notifier: "User", message: str, log: bool = False,
+    def notify_user(self, user_to_notify: User, notifier: User, message: str, log: bool = False,
                     extra_message: str = ""):
         """
         Notify a user with a message.
@@ -27,7 +38,7 @@ class Notificator:
         # user the notify method from the User class
         user_to_notify.notify(message, log, extra_message)
 
-    def notify_all_followers(self, caller: "User", message: str, log: bool = False):
+    def notify_all_followers(self, caller: User, message: str, log: bool = False):
         """
         Notify all followers of a user.
         Args:

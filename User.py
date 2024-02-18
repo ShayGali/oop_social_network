@@ -1,5 +1,12 @@
-import importlib
-from typing import Set, List
+# for type hinting
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Set, List
+
+if TYPE_CHECKING:
+    from posts.Post import Post
+
+# end type hinting
 
 from CostomExcption import NotLoginError, IllegalOperationError
 from PostFactory import PostFactory
@@ -51,7 +58,7 @@ class User:
         else:
             raise IllegalOperationError("User is not following the given user")
 
-    def publish_post(self, post_type: str, *args):
+    def publish_post(self, post_type: str, *args) -> Post:
         """
         Publish a post of the given type.
         The post will be created using the post-factory.
@@ -66,7 +73,7 @@ class User:
         self.num_of_posts += 1
         return new_post
 
-    def notify(self, message: str, log: bool, extra_message: str = ""):
+    def notify(self, message: str, log: bool, extra_message: str = "") -> None:
         """
          Notify the user with the given message.
          If the log is True, the message will be printed to the console
@@ -84,23 +91,23 @@ class User:
         for n in self.notifications:
             print(n)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'User name: {self.username}, Number of posts: {self.num_of_posts}, Number of followers: {len(self.followers)}'
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self.__str__()
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         if isinstance(other, User):
             return self.username == other.username
         return False
 
-    def __hash__(self):
+    def __hash__(self) -> int:
         return hash(self.username)
 
     @staticmethod
-    def check_if_user_login(user):
-        social_network = importlib.import_module("SocialNetwork").SocialNetwork
+    def check_if_user_login(user) -> None:
+        from SocialNetwork import SocialNetwork
         # only logged-in users can do this
-        if not social_network.get_instance().is_user_logged_in(user):
+        if not SocialNetwork.get_instance().is_user_logged_in(user):
             raise NotLoginError("User is not logged in")
