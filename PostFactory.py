@@ -9,12 +9,12 @@ class PostFactory:
     def create_post(post_type: str, creator, *args) -> Post:
         if post_type == "Text":
             post = TextPost(creator, *args)
-        if post_type == "Image":
+        elif post_type == "Image":
             post = ImagePost(creator, *args)
-        if post_type == "Sale":
+        elif post_type == "Sale":
             post = SalePost(creator, *args)
         else:
-            raise ValueError("Invalid post type")
+            raise ValueError(f"Invalid post type for type: {post_type}")
 
         print(post)
         return post
