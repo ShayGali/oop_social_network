@@ -1,9 +1,19 @@
+# for type hinting
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from User import User
+
+# end type hinting
+
 from CostomExcption import InvalidCredentialsError
 from posts.Post import Post
 
 
 class SalePost(Post):
-    def __init__(self, creator, product_name: str, price: float, city: str):
+    def __init__(self, creator: User, product_name: str, price: float, city: str):
         super().__init__(creator)
         self._product_name = product_name
         self._price = price
