@@ -41,7 +41,6 @@ class User:
         if user == self:
             raise ValueError("Cannot follow yourself")
         user._followers.add(self)
-
         # print message
         print(f"{self.username} started following {user.username}")
 
