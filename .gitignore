@@ -2,3 +2,4 @@
 venv
 .idea
 __pycache__
+self_check/check_sub
