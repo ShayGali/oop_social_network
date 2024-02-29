@@ -20,6 +20,12 @@ class ImagePost(Post):
         self._image_url = image_path
 
     def display(self) -> None:
+        """
+        Display the image.
+        Raises: FileNotFoundError if the file not found
+        Returns:
+
+        """
         print("Shows picture")
         img = Image.open(self._image_url)
         plt.imshow(img)
